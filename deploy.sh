@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bas
 set -euo pipefail
 
 : "${REPO_URL:?Missing REPO_URL}"
