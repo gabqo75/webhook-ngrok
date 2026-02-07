@@ -28,15 +28,17 @@ npm install
 
 # 3. Arrêt de l'ancienne version (pour libérer le port)
 echo "Stopping previous app (best-effort)..."
-# Tue tout processus qui utilise le port 5173 ou 3000
+# Tue les processus sur les ports standards de React/Vite
 lsof -ti :5173 | xargs kill -9 2>/dev/null || true
 lsof -ti :3000 | xargs kill -9 2>/dev/null || true
 sleep 2
 
-# 4. Lancement de l'application
+# 4. Lancement de l'application en arrière-plan
 echo "Starting app..."
+# On vérifie quel script est disponible dans le package.json
 if npm run | grep -qE ' start'; then
-    nohup npm run start > app.log 2>&1 &
+    # nohup et & permettent de garder l'app allumée après la fermeture du script
+    nohup npm run start -- --host 0.0.0.0 > app.log 2>&1 &
     echo "Started with: npm run start"
 elif npm run | grep -qE ' dev'; then
     nohup npm run dev -- --host 0.0.0.0 > app.log 2>&1 &
